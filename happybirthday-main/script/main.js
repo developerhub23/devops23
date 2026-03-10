@@ -83,11 +83,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     rendered.push({ el, comp, section });
   });
 
-// Auto-play music
-  if (audio) {
-    audio.play().catch(() => {});
-  }
-  buildTimeline(rendered);
+// SweetAlert music prompt
+  const isDark = currentMode === "dark";
+  Swal.fire({
+    title: "Play music in the background?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: CONFIG.colors.accent || "#3085d6",
+    cancelButtonColor: "#888",
+    confirmButtonText: "Yes!",
+    cancelButtonText: "No",
+    background: isDark ? "#1e293b" : "#ffffff",
+    color: isDark ? "#f1f5f9" : "#1e293b",
+  }).then((result) => {
+    if (result.isConfirmed && audio) {
+      audio.play().catch(() => {});
+    }
+    buildTimeline(rendered);
+  });
 });
 
 // ── Timeline Builder ─────────────────────────────────────────────
